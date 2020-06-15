@@ -12,11 +12,18 @@ class Board extends React.Component {
   }
 
   clickHandler (id) {
-    const selected = this.props.tiles.find(tile => tile.id === id)
-    selected.isVisible = true
-    this.setState({
-      tile1: selected
-    })
+    if (!this.state.tile1) {
+      const firstSelection = this.props.tiles.find(tile => tile.id === id)
+      firstSelection.isVisible = true
+      this.setState({
+        tile1: firstSelection
+      })
+    } else if (this.state.tile1) {
+      const secondSelection = this.props.tiles.find(tile => tile.id === id)
+      this.setState({
+        tile2: secondSelection
+      })
+    }
   }
 
   render () {
