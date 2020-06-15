@@ -13,6 +13,7 @@ class Board extends React.Component {
 
   clickHandler (id) {
     const selected = this.props.tiles.find(tile => tile.id === id)
+    selected.isVisible = true
     this.setState({
       tile1: selected
     })
