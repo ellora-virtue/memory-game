@@ -2,7 +2,7 @@ import React from 'react'
 
 const Tile = props => {
   return (
-    <div className='tile'>
+    <div className='tile' onClick={props.handleClick}>
       {props.isVisible &&
         props.value
       }
