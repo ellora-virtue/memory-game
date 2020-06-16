@@ -9,20 +9,37 @@ class Board extends React.Component {
       tile1: null,
       tile2: null
     }
+    this.clickHandler = this.clickHandler.bind(this)
   }
 
   clickHandler (id) {
-    if (!this.state.tile1) {
-      const firstSelection = this.props.tiles.find(tile => tile.id === id)
-      firstSelection.isVisible = true
+    const { tile1 } = this.state
+    const selected = this.props.tiles.find(tile => tile.id === id)
+    selected.isVisible = true
+    if (!tile1) {
       this.setState({
-        tile1: firstSelection
+        tile1: selected
       })
-    } else if (this.state.tile1) {
-      const secondSelection = this.props.tiles.find(tile => tile.id === id)
+    } else if (tile1) {
       this.setState({
-        tile2: secondSelection
-      })
+        tile2: selected
+      },
+      this.calculatePair)
+    }
+  }
+
+  calculatePair () {
+    const { tile1, tile2 } = this.state
+    const isMatch = tile1.value === tile2.value
+    if (isMatch) {
+      this.props.evalMatch(tile1, tile2)
+    } else {
+      setTimeout(() => {
+        this.setState({
+          tile1: null,
+          tile2: null
+        })
+      }, 1000)
     }
   }
 
