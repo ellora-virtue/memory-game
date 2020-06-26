@@ -31,15 +31,19 @@ class Board extends React.Component {
   calculatePair () {
     const { tile1, tile2 } = this.state
     const isMatch = tile1.value === tile2.value
-    if (isMatch) {
+
+    const processTiles = () => {
+      this.setState({
+        tile1: null,
+        tile2: null
+      })
       this.props.evalMatch(tile1, tile2)
+    }
+
+    if (isMatch) {
+      processTiles()
     } else {
-      setTimeout(() => {
-        this.setState({
-          tile1: null,
-          tile2: null
-        })
-      }, 1000)
+      setTimeout(processTiles, 1000)
     }
   }
 

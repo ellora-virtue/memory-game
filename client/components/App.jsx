@@ -11,25 +11,29 @@ class App extends React.Component {
     super(props)
     this.state = {
       matchCount: 0,
-      isMatch: true
+      isMatch: true,
+      tiles: startingTiles
     }
   }
 
   evalMatch = (tile1, tile2) => {
-    this.setState({
-      isMatch: tile1.value === tile2.value
+    const { matchCount } = this.state
+    const isMatch = tile1.value === tile2.value
+    const updatedTiles = this.state.tiles.map(tile => {
+      if (!isMatch && (tile === tile1 || tile === tile2)) {
+        tile.isVisible = false
+      }
+      return tile
     })
-  }
-
-  foundMatch = () => {
     this.setState({
-      matchCount: this.state.matchCount + 1,
-      isMatch: true
+      matchCount: isMatch ? matchCount + 1 : matchCount,
+      tiles: updatedTiles,
+      isMatch: isMatch
     })
   }
 
   render () {
-    console.log(this.state)
+    console.log(this.state.matchCount)
     const hasWon = this.state.matchCount === (startingTiles.length / 2)
     return (
       <div className='game'>
@@ -37,7 +41,7 @@ class App extends React.Component {
         <h2>Match all the tiles to win</h2>
 
         <Board
-          tiles={startingTiles}
+          tiles={this.state.tiles}
           foundMatch={this.foundMatch}
           evalMatch={this.evalMatch}
         />
